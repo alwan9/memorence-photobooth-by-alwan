@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+canvas {
+  width: 250px;
+  height: 170px;
+  object-fit: cover;
+  border: 1px solid #000;
+  background: white;
+}
+
+.video {
+  border: rgb(140, 0, 199);
+  border: -moz-linear-gradient(
+    331deg,
+    rgba(140, 0, 199, 1) 0%,
+    rgba(30, 9, 190, 1) 100%
+  );
+  border: -webkit-linear-gradient(
+    331deg,
+    rgba(140, 0, 199, 1) 0%,
+    rgba(30, 9, 190, 1) 100%
+  );
+  border: linear-gradient(
+    331deg,
+    rgba(140, 0, 199, 1) 0%,
+    rgba(30, 9, 190, 1) 100%
+  );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#8c00c7",endColorstr="#1e09be",GradientType=1);
+}

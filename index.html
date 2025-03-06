@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://stuk.github.io/jszip/dist/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <link href="./src/output.css" rel="stylesheet">
+    <link href="./src/input.css" rel="stylesheet">
+    <title>Buka Kamera di Website</title>
+
+    <style>
+        canvas {
+            width: 100%;
+            /* width: 220px; */
+            height: 150px;
+            object-fit: cover;
+            border: 1px solid #000;
+            background: white;
+        }
+
+        /* .video-border {
+            background-color: rgb(140, 0, 199);
+            background-color: -moz-linear-gradient(331deg,
+                    rgba(140, 0, 199, 1) 0%,
+                    rgba(30, 9, 190, 1) 100%);
+            background-color: -webkit-linear-gradient(331deg,
+                    rgba(140, 0, 199, 1) 0%,
+                    rgba(30, 9, 190, 1) 100%);
+            background-color: linear-gradient(331deg,
+                    rgba(140, 0, 199, 1) 0%,
+                    rgba(30, 9, 190, 1) 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#8c00c7", endColorstr="#1e09be", GradientType=1);
+        } */
+
+        #video {
+            width: 800px;
+            height: 400px;
+            object-fit: cover;
+        }
+
+
+
+        .bg-warna {
+            background: rgb(45, 9, 116);
+            background: -moz-linear-gradient(0deg, rgb(42, 10, 108) 0%, rgba(93, 41, 198, 1) 100%);
+            background: -webkit-linear-gradient(0deg, rgb(41, 8, 105) 0%, rgba(93, 41, 198, 1) 100%);
+            background: linear-gradient(0deg, rgb(41, 8, 106) 0%, rgba(93, 41, 198, 1) 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#220758", endColorstr="#5d29c6", GradientType=1);
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+
+    <!-- wm -->
+    <div class="flex items-center justify-between my-10  ">
+        <p class=" font-bold text-violet-800 pl-[5%] rounded-l-lg"> Memorence Photoboth <span class=" font-light">
+                Versi 1.0 By Alwan </span></p>
+        <div class="h-[10px] w-[70%] bg-violet-900"> </div>
+    </div>
+
+    <div class=" flex justify-center gap-[50%] items-center h-full">
+        <div class="flex items-center gap-[10%]">
+            <div>
+                <div class=" bg-zinc-100 shadow-xl py-5 px-10 rounded-md">
+                    <h1 class="text-5xl font-bold text-violet-800">MEMORENCE PHOTOBOTH </h1>
+                    <p class=" text-zinc-500 text-xl mt-1">Website photoboth by alwan versi 1.0</p>
+                </div>
+                <div class="mt-10 relative text-zinc-50 bg-zinc-100 shadow-xl py-5 px-10 rounded-md">
+                    <div class="video-border">
+                        <video id="video" autoplay class="border-2 video  z-1 border-gray-500 "></video>
+                    </div>
+
+                    <p id="timer" class="text-xl  font-bold z-2 right-5 top-5"></p>
+
+
+                    <select class=" border-violet-800 borde-2 rounded-md text-violet-900 w-full my-3 px-5 py-2">
+                        <option value="">Template 1 </option>
+                        <option value="">Template 2 </option>
+                    </select>
+
+                    <div class="grid grid-cols-3 gap-2">
+                        <button onclick="startCamera()"
+                            class=" w-full hover:bg-violet-300 cursor-pointer duration-200 bg-warna mt-3  px-4 py-2  rounded flex gap-2 items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 56 56">
+                                <path fill="currentColor"
+                                    d="M7.809 50.348H48.19c4.875 0 7.36-2.438 7.36-7.266V18.543c0-4.828-2.485-7.242-7.36-7.242h-5.484c-1.828 0-2.39-.375-3.445-1.547l-1.899-2.11c-1.148-1.288-2.343-1.992-4.781-1.992h-9.328c-2.414 0-3.61.704-4.781 1.992l-1.899 2.11c-1.031 1.148-1.617 1.547-3.445 1.547h-5.32c-4.875 0-7.36 2.414-7.36 7.242v24.539c0 4.828 2.485 7.266 7.36 7.266m.07-3.774c-2.32 0-3.656-1.242-3.656-3.68v-24.14c0-2.438 1.336-3.68 3.656-3.68h6.187c2.11 0 3.235-.398 4.407-1.71l1.851-2.063c1.336-1.5 2.016-1.875 4.102-1.875h6.984c2.086 0 2.766.375 4.102 1.875l1.851 2.062c1.172 1.313 2.297 1.711 4.407 1.711h6.351c2.32 0 3.657 1.242 3.657 3.68v24.14c0 2.438-1.336 3.68-3.657 3.68Zm20.11-3.726a12.76 12.76 0 0 0 12.796-12.82c0-7.126-5.672-12.82-12.797-12.82c-7.078 0-12.773 5.694-12.773 12.82c0 7.124 5.695 12.82 12.773 12.82m16.851-18.54c1.594 0 2.906-1.288 2.906-2.882a2.906 2.906 0 1 0-5.812 0c0 1.594 1.312 2.883 2.906 2.883m-16.85 14.977c-5.086 0-9.234-4.125-9.234-9.258s4.125-9.257 9.234-9.257a9.247 9.247 0 0 1 9.258 9.257a9.247 9.247 0 0 1-9.258 9.258" />
+                            </svg>
+                            Mulai
+                            Kamera</button>
+                        <button onclick="startCountdown()"
+                            class=" w-full hover:bg-violet-300 cursor-pointer duration-200 bg-warna mt-3   px-4 py-2  rounded flex gap-2 items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path fill="currentColor"
+                                    d="M11.285 9.23h8.23q-.655-1.763-2.091-3.116Q15.989 4.762 14.15 4.3zm-2.07 2L13.37 4.1q-.275-.05-.684-.075T12 4q-1.65 0-3.075.625T6.4 6.3zM4.25 14h5.68L5.855 6.908Q4.977 7.99 4.489 9.266T4 12q0 .525.063 1.013T4.25 14m5.639 5.7l2.853-4.93H4.484q.656 1.763 2.111 3.116T9.89 19.7M12 20q1.65 0 3.075-.625T17.6 17.7l-2.815-4.93l-4.116 7.092q.275.069.653.104T12 20m6.146-2.908q.8-1.025 1.327-2.358T20 12q0-.525-.062-1.012T19.75 10h-5.68zM12 21q-1.858 0-3.5-.71q-1.642-.711-2.86-1.93T3.71 15.5T3 12q0-1.864.71-3.503q.711-1.64 1.93-2.857T8.5 3.71Q10.142 3 12 3q1.864 0 3.503.71q1.64.711 2.858 1.93t1.929 2.857Q21 10.137 21 12q0 1.858-.71 3.5q-.711 1.642-1.93 2.86t-2.857 1.93T12 21" />
+                            </svg>
+                            Ambil
+                            Foto</button>
+                        <button
+                            class="mt-3 w-full bg-zinc-50 border-2 hover:bg-violet-300 cursor-pointer duration-200 border-violet-800 text-violet-900 rounded   px-10 py-3 flex gap-2 items-center justify-center"
+                            onclick="downloadContainerAsImage()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path fill="currentColor"
+                                    d="M12 15.575q-.2 0-.375-.062T11.3 15.3l-3.6-3.6q-.3-.3-.288-.7t.288-.7q.3-.3.713-.312t.712.287L11 12.15V5q0-.425.288-.712T12 4t.713.288T13 5v7.15l1.875-1.875q.3-.3.713-.288t.712.313q.275.3.288.7t-.288.7l-3.6 3.6q-.15.15-.325.213t-.375.062M6 20q-.825 0-1.412-.587T4 18v-2q0-.425.288-.712T5 15t.713.288T6 16v2h12v-2q0-.425.288-.712T19 15t.713.288T20 16v2q0 .825-.587 1.413T18 20z" />
+                            </svg>
+                            Download Hasil</button>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div id="photo-container" class="py-7 gap-2  bg-warna px-4 shadow-md">
+                <div class="relative ">
+                    <p class=" text-zinc-300 rotate-90 absolute -right-[50%] font-bold top-[91%] uppercase"> photoboth
+                        by alwan versi 1.0 </p>
+
+                    <canvas class="z-[99]" id="canvas1"></canvas>
+                    <button onclick="retakePhoto(0)"
+                        class="retake-btn absolute bottom-2 left-2 bg-red-500 text-white px-2 py-1 rounded hidden">Retake</button>
+                </div>
+                <div class="relative mt-3">
+                    <canvas class="z-[99]" id="canvas2"></canvas>
+                    <button onclick="retakePhoto(1)"
+                        class="retake-btn absolute bottom-2 left-2 bg-red-500 text-white px-2 py-1 rounded hidden">Retake</button>
+                </div>
+                <div class="relative mt-3">
+                    <canvas class="z-[99]" id="canvas3"></canvas>
+                    <button onclick="retakePhoto(2)"
+                        class="retake-btn absolute bottom-2 left-2 bg-red-500 text-white px-2 py-1 rounded hidden">Retake</button>
+                </div>
+                <div class="relative mt-3">
+                    <p class=" text-zinc-300 rotate-90 absolute right-[50%] font-bold top-[11%] w-full uppercase">
+                        photoboth by alwan versi 1.0 </p>
+
+                    <canvas class="z-[99]" id="canvas4"></canvas>
+                    <button onclick="retakePhoto(3)"
+                        class="retake-btn absolute bottom-2 left-2 bg-red-500 text-white px-2 py-1 rounded hidden">Retake</button>
+                </div>
+                <!-- teks -->
+                <div class="text-center text-zinc-50 mt-5">
+                    <h1 class="  font-bold text-4xl ">MEMORENCE</h1>
+                    <p class=" text-zinc-300"> photoboth by alwan versi 1.0 </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <button id="downloadMerged" onclick="downloadMergedPhoto()"
+        class="hidden bg-green-500 px-4 py-2 rounded text-white mt-4">
+        Download Gambar Gabungan
+    </button>
+    <button id="downloadAll" onclick="downloadAllPhotos()"
+        class="hidden bg-yellow-500 px-4 py-2 rounded text-white">Download Semua</button>
+    <div class="flex items-center justify-between my-10  ">
+        <div class="h-[10px] w-[70%] bg-violet-900"> </div>
+        <p class=" font-bold text-violet-800 pr-[5%] rounded-l-lg"> Memorence Photoboth <span class=" font-light">
+                Versi 1.0 By Alwan </span></p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="/script.js"></script>
+</body>
+
+</html>
