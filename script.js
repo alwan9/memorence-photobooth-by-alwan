@@ -110,13 +110,30 @@ function downloadContainerAsImage() {
         return;
     }
 
+    // Menyembunyikan elemen yang ingin dikecualikan
+    let excludedElements = document.querySelectorAll("#exclude, .no-capture");
+    excludedElements.forEach(el => el.style.display = "none");
+
+    // Screenshot menggunakan html2canvas
     html2canvas(container).then(canvas => {
         let link = document.createElement("a");
         link.href = canvas.toDataURL("image/png");
         link.download = "photo_container.png";
         link.click();
+
+        // Mengembalikan elemen yang disembunyikan
+        excludedElements.forEach(el => el.style.display = "");
     });
 }
+
+// untuk mengganti template 
+document.getElementById("templateSelector").addEventListener("change", function() {
+    let selectedTemplate = this.value;
+    document.querySelectorAll(".template").forEach(template => {
+        template.classList.add("hidden"); // Sembunyikan semua template
+    });
+    document.getElementById(selectedTemplate).classList.remove("hidden"); // Tampilkan yang dipilih
+});
 
 function downloadAllPhotos() {
     let zip = new JSZip();

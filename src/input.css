@@ -10,6 +10,14 @@ canvas {
   background: white;
 }
 
+.lexend-deca  {
+  font-family: "Lexend Deca", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: bold;
+  font-style: normal;
+}
+
+
 .video {
   border: rgb(140, 0, 199);
   border: -moz-linear-gradient(

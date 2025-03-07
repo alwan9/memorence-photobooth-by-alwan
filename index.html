@@ -8,6 +8,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <link href="./src/output.css" rel="stylesheet">
     <link href="./src/input.css" rel="stylesheet">
+    <!-- font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet">
     <title>Buka Kamera di Website</title>
 
     <style>
@@ -59,7 +63,7 @@
 
     <!-- wm -->
     <div class="flex items-center justify-between my-10  ">
-        <p class=" font-bold text-violet-800 pl-[5%] rounded-l-lg"> Memorence Photoboth <span class=" font-light">
+        <p class=" font-bold text-violet-800 pl-[5%] rounded-l-lg"> Memorence Photobooth <span class=" font-light">
                 Versi 1.0 By Alwan </span></p>
         <div class="h-[10px] w-[70%] bg-violet-900"> </div>
     </div>
@@ -68,8 +72,8 @@
         <div class="flex items-center gap-[10%]">
             <div>
                 <div class=" bg-zinc-100 shadow-xl py-5 px-10 rounded-md">
-                    <h1 class="text-5xl font-bold text-violet-800">MEMORENCE PHOTOBOTH </h1>
-                    <p class=" text-zinc-500 text-xl mt-1">Website photoboth by alwan versi 1.0</p>
+                    <h1 class="text-5xl font-bold text-violet-800 lexend-deca">MEMORENCE PHOTOBOOTH </h1>
+                    <p class=" text-zinc-500 text-xl mt-1">Website photobooth by alwan versi 1.0</p>
                 </div>
                 <div class="mt-10 relative text-zinc-50 bg-zinc-100 shadow-xl py-5 px-10 rounded-md">
                     <div class="video-border">
@@ -79,10 +83,14 @@
                     <p id="timer" class="text-xl  font-bold z-2 right-5 top-5"></p>
 
 
-                    <select class=" border-violet-800 borde-2 rounded-md text-violet-900 w-full my-3 px-5 py-2">
-                        <option value="">Template 1 </option>
-                        <option value="">Template 2 </option>
+                    <select id="templateSelector"
+                        class="border-violet-800 border-2 rounded-md text-violet-900 w-full my-3 px-5 py-2">
+                        <option value="template1" selected>Template 1</option>
+                        <option value="template2">Template 2</option>
                     </select>
+
+
+
 
                     <div class="grid grid-cols-3 gap-2">
                         <button onclick="startCamera()"
@@ -115,52 +123,105 @@
             </div>
 
 
-            <div id="photo-container" class="py-7 gap-2  bg-warna px-4 shadow-md">
-                <div class="relative ">
-                    <p class=" text-zinc-300 rotate-90 absolute -right-[50%] font-bold top-[91%] uppercase"> photoboth
-                        by alwan versi 1.0 </p>
 
-                    <canvas class="z-[99]" id="canvas1"></canvas>
-                    <button onclick="retakePhoto(0)"
-                        class="retake-btn absolute bottom-2 left-2 bg-red-500 text-white px-2 py-1 rounded hidden">Retake</button>
-                </div>
-                <div class="relative mt-3">
-                    <canvas class="z-[99]" id="canvas2"></canvas>
-                    <button onclick="retakePhoto(1)"
-                        class="retake-btn absolute bottom-2 left-2 bg-red-500 text-white px-2 py-1 rounded hidden">Retake</button>
-                </div>
-                <div class="relative mt-3">
-                    <canvas class="z-[99]" id="canvas3"></canvas>
-                    <button onclick="retakePhoto(2)"
-                        class="retake-btn absolute bottom-2 left-2 bg-red-500 text-white px-2 py-1 rounded hidden">Retake</button>
-                </div>
-                <div class="relative mt-3">
-                    <p class=" text-zinc-300 rotate-90 absolute right-[50%] font-bold top-[11%] w-full uppercase">
-                        photoboth by alwan versi 1.0 </p>
+            <!-- template1 -->
+            <div id="template1" class="template   gap-2 bg-warna  shadow-md hidden">
+                <div id="photo-container" class="py-7 gap-2  bg-warna px-4 shadow-md ">
+                    <div class="relative ">
+                        <p
+                            class=" text-zinc-300 z-[1] rotate-90 absolute -right-[50%] font-bold top-[101%] uppercase w-full">
+                            photobooth
+                            by alwan v1.0 </p>
+                        <canvas class="z-[99]" id="canvas1"></canvas>
+                        <button onclick="retakePhoto(0)"
+                            class="retake-btn no-capture absolute bottom-2 left-2 bg-red-500 text-white px-2 py-1 rounded hidden">Retake</button>
+                    </div>
+                    <div class="relative mt-3">
+                        <canvas class="z-[99]" id="canvas2"></canvas>
+                        <button onclick="retakePhoto(1)"
+                            class="retake-btn no-capture absolute bottom-2 left-2 bg-red-500 text-white px-2 py-1 rounded hidden">Retake</button>
+                    </div>
+                    <div class="relative mt-3">
+                        <canvas class="z-[99]" id="canvas3"></canvas>
+                        <button onclick="retakePhoto(2)"
+                            class="retake-btn no-capture absolute bottom-2 left-2 bg-red-500 text-white px-2 py-1 rounded hidden">Retake</button>
+                    </div>
+                    <div class="relative mt-3">
+                        <p
+                            class=" text-zinc-300 z-[1] rotate-90 absolute right-[50%] font-bold top-[11%] w-full uppercase">
+                            photoboOth by alwan v1.0 </p>
 
-                    <canvas class="z-[99]" id="canvas4"></canvas>
-                    <button onclick="retakePhoto(3)"
-                        class="retake-btn absolute bottom-2 left-2 bg-red-500 text-white px-2 py-1 rounded hidden">Retake</button>
-                </div>
-                <!-- teks -->
-                <div class="text-center text-zinc-50 mt-5">
-                    <h1 class="  font-bold text-4xl ">MEMORENCE</h1>
-                    <p class=" text-zinc-300"> photoboth by alwan versi 1.0 </p>
+                        <canvas class="z-[99]" id="canvas4"></canvas>
+                        <button onclick="retakePhoto(3)"
+                            class="retake-btn no-capture absolute bottom-2 left-2 bg-red-500 text-white px-2 py-1 rounded hidden">Retake</button>
+                    </div>
+                    <!-- teks -->
+                    <div class="text-center text-zinc-50 mt-5">
+                        <h1 class="  font-bold text-4xl lexend-deca">MEMORENCE</h1>
+                        <p class=" text-zinc-300"> photobooth by alwan versi 1.0 </p>
+                    </div>
                 </div>
             </div>
+
+
+            <!-- tenplate 2 -->
+            <div id="template2" class="template py-7 gap-2 bg-warna px-2 shadow-md hidden">
+                <div id="photo-container" class="py-7 gap-2   bg-warna px-4 shadow-md ">
+                    <div class="grid grid-cols-2 gap-2 pt-2">
+                        <div class="relative  ">
+                            <p
+                                class=" text-zinc-300 z-[1] rotate-90 absolute -right-[156%] font-bold top-[101%] uppercase w-full">
+                                photobooth
+                                by alwan v1.0 </p>
+                            <canvas class="z-[99]" id="canvas1"></canvas>
+                            <button onclick="retakePhoto(0)"
+                                class="retake-btn no-capture absolute bottom-2 left-2 bg-red-500 text-white px-2 py-1 rounded hidden">Retake</button>
+                        </div>
+                        <div class="relative ">
+                            <canvas class="z-[99]" id="canvas2"></canvas>
+                            <button onclick="retakePhoto(1)"
+                                class="retake-btn no-capture absolute bottom-2 left-2 bg-red-500 text-white px-2 py-1 rounded hidden">Retake</button>
+                        </div>
+                        <div class="relative ">
+                            <canvas class="z-[99]" id="canvas3"></canvas>
+                            <button onclick="retakePhoto(2)"
+                                class="retake-btn no-capture absolute bottom-2 left-2 bg-red-500 text-white px-2 py-1 rounded hidden">Retake</button>
+                        </div>
+                        <div class="relative ">
+                            <p
+                                class=" text-zinc-300 z-[1] rotate-90 absolute right-[156%] font-bold top-[21%] w-full uppercase">
+                                photoboOth by alwan v1.0 </p>
+
+                            <canvas class="z-[99]" id="canvas4"></canvas>
+                            <button onclick="retakePhoto(3)"
+                                class="retake-btn no-capture absolute bottom-2 left-2 bg-red-500 text-white px-2 py-1 rounded hidden">Retake</button>
+                        </div>
+                    </div>
+
+                    <!-- teks -->
+                    <div class="text-center text-zinc-50 mt-5">
+                        <h1 class="  font-bold text-4xl lexend-deca">MEMORENCE</h1>
+                        <p class=" text-zinc-300"> photobooth by alwan versi 1.0 </p>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
 
-    <button id="downloadMerged" onclick="downloadMergedPhoto()"
+    <!-- <button id="downloadMerged" onclick="downloadMergedPhoto()"
         class="hidden bg-green-500 px-4 py-2 rounded text-white mt-4">
         Download Gambar Gabungan
     </button>
     <button id="downloadAll" onclick="downloadAllPhotos()"
-        class="hidden bg-yellow-500 px-4 py-2 rounded text-white">Download Semua</button>
+        class="hidden bg-yellow-500 px-4 py-2 rounded text-white">Download Semua</button> -->
+
+
+
     <div class="flex items-center justify-between my-10  ">
         <div class="h-[10px] w-[70%] bg-violet-900"> </div>
-        <p class=" font-bold text-violet-800 pr-[5%] rounded-l-lg"> Memorence Photoboth <span class=" font-light">
+        <p class=" font-bold text-violet-800 pr-[5%] rounded-l-lg"> Memorence Photobooth <span class=" font-light">
                 Versi 1.0 By Alwan </span></p>
     </div>
 
