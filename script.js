@@ -34,15 +34,19 @@ overlay.addEventListener('click', () => {
     overlay.classList.add('hidden');
 });
 
+
+
 // ambil elemen
 const colorStart = document.getElementById('colorStart');
 const colorEnd = document.getElementById('colorEnd');
 const photoArea1 = document.getElementById('template1');
 const photoArea2 = document.getElementById('template2');
+const photoArea3 = document.getElementById('template3');
+const photoArea4 = document.getElementById('template4');
 
 // warna default
-const defaultStart = '#270f7e';
-const defaultEnd = '#4b10b9';
+const defaultStart = '#696870';
+const defaultEnd = '#474549';
 
 // fungsi update gradasi
 function updateGradient() {
@@ -50,6 +54,8 @@ function updateGradient() {
     const end = colorEnd.value;
     photoArea1.style.backgroundImage = `linear-gradient(to right, ${start}, ${end})`;
     photoArea2.style.backgroundImage = `linear-gradient(to right, ${start}, ${end})`;
+    photoArea3.style.backgroundImage = `linear-gradient(to right, ${start}, ${end})`;
+    photoArea4.style.backgroundImage = `linear-gradient(to right, ${start}, ${end})`;
 }
 
 // fungsi reset gradasi
@@ -58,6 +64,8 @@ function resetGradient() {
     colorEnd.value = defaultEnd;
     photoArea1.style.backgroundImage = `linear-gradient(to right, ${defaultStart}, ${defaultEnd})`;
     photoArea2.style.backgroundImage = `linear-gradient(to right, ${defaultStart}, ${defaultEnd})`;
+    photoArea3.style.backgroundImage = `linear-gradient(to right, ${defaultStart}, ${defaultEnd})`;
+    photoArea4.style.backgroundImage = `linear-gradient(to right, ${defaultStart}, ${defaultEnd})`;
 }
 
 // pas input warna berubah, update gradasi
@@ -72,10 +80,14 @@ let canvasList = [
     document.getElementById("canvas1"),
     document.getElementById("canvas2"),
     document.getElementById("canvas3"),
-    document.getElementById("canvas4")
+    document.getElementById("canvas4"),
+    document.getElementById("canvas5"),
+    document.getElementById("canvas6"),
+    document.getElementById("canvas7"), // canvas tambahan untuk template 4
+    document.getElementById("canvas8")
 ];
 let retakeButtons = document.querySelectorAll(".retake-btn");
-let photoTaken = [false, false, false, false];
+let photoTaken = Array(8).fill(false);
 let photoCount = 0;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -103,7 +115,7 @@ timeSelect.addEventListener("change", function () {
 });
 
 function startCountdown() {
-    if (photoCount >= 4) return;
+    if (photoCount >= 8) return;
 
     let count = selectedTime; // pakai waktu yang dipilih
     timerDisplay.innerText = count;
@@ -118,7 +130,7 @@ function startCountdown() {
     }, 1000);
 
 } function takeSnapshot() {
-    if (photoCount >= 4) return;
+    if (photoCount >= 8) return;
 
     let canvas = canvasList[photoCount];
     let context = canvas.getContext("2d");
@@ -240,14 +252,26 @@ document.getElementById("templateSelector").addEventListener("change", function 
     });
 
     // Jika opsi "1" dipilih, sembunyikan semua elemen
+    // Jika opsi "1" dipilih, sembunyikan semua elemen
     if (selectedTemplate === "1") {
         document.getElementById("photo-container").classList.add("hidden");
-    } else {
+    } else if (selectedTemplate === "template3") {
+        // Jika template3 dipilih, sinkronkan konten kanvas
+        syncCanvasContent("canvas1", "canvas1_copy");
+        syncCanvasContent("canvas2", "canvas2_copy");
+        syncCanvasContent("canvas3", "canvas3_copy");
+        syncCanvasContent("canvas4", "canvas4_copy");
+        syncCanvasContent("canvas5", "canvas5_copy");
+        syncCanvasContent("canvas6", "canvas6_copy");
+    }  else {
         // Jika opsi lain dipilih, tampilkan template sesuai pilihan
         document.getElementById(selectedTemplate).classList.remove("hidden");
         document.getElementById("photo-container").classList.remove("hidden");
     }
+
+
 });
+
 
 function downloadSelectedTemplate() {
     const selectedTemplateId = document.getElementById("templateSelector").value;
@@ -258,25 +282,58 @@ function downloadSelectedTemplate() {
         return;
     }
 
-    // Sembunyikan elemen dengan class 'no-capture'
-    const excludedElements = selectedTemplate.querySelectorAll(".no-capture");
+    // Sembunyikan elemen yang tidak perlu terlihat
+    const excludedElements = selectedTemplate.querySelectorAll(".no-capture, .upload-btn, label[for]");
     excludedElements.forEach(el => el.style.display = "none");
 
-    // Gunakan html2canvas untuk menangkap template aktif
+    // Tangani canvas agar tidak membesar berlebihan → batasi max-width
+    const canvases = selectedTemplate.querySelectorAll("canvas");
+    const originalCanvasStyles = [];
+
+    canvases.forEach((canvas, i) => {
+        originalCanvasStyles[i] = {
+            width: canvas.style.width,
+            height: canvas.style.height,
+            maxWidth: canvas.style.maxWidth
+        };
+
+        // ✅ Gunakan ukuran proporsional (bukan paksa pixel penuh)
+        // ladscape
+        canvas.style.width = "100%";
+        canvas.style.height = "auto";
+        canvas.style.maxWidth = "600px";
+        // potreit
+        // canvas.style.width = "100%";
+        // canvas.style.height = "400px";
+        // canvas.style.maxWidth = "100%"; 
+
+    });
+
     html2canvas(selectedTemplate, {
         backgroundColor: null,
         useCORS: true,
-        scale: 2
+        scale: 2,
+        scrollX: 0,
+        scrollY: -window.scrollY
     }).then(canvas => {
         const link = document.createElement("a");
         link.href = canvas.toDataURL("image/png");
         link.download = `template_${selectedTemplateId}-${dateStr}.png`;
         link.click();
 
-        // Tampilkan kembali elemen yang disembunyikan
+        // Kembalikan style canvas seperti semula
+        canvases.forEach((canvas, i) => {
+            canvas.style.width = originalCanvasStyles[i].width;
+            canvas.style.height = originalCanvasStyles[i].height;
+            canvas.style.maxWidth = originalCanvasStyles[i].maxWidth;
+        });
+
         excludedElements.forEach(el => el.style.display = "");
     });
 }
+
+
+
 
 function syncCanvasContent(sourceId, targetId) {
     const sourceCanvas = document.getElementById(sourceId);
@@ -313,8 +370,15 @@ document.getElementById("templateSelector").addEventListener("change", function 
         syncCanvasContent("canvas2", "canvas2_copy");
         syncCanvasContent("canvas3", "canvas3_copy");
         syncCanvasContent("canvas4", "canvas4_copy");
+    } else if (selectedTemplate === "template3") {
+        syncCanvasContent("canvas1", "canvas3_only");
+    } else if (selectedTemplate === "template4") {
+        syncCanvasContent("canvas1", "canvas5_copy");
+        syncCanvasContent("canvas2", "canvas6_copy");
+        syncCanvasContent("canvas3", "canvas7_copy");
+        syncCanvasContent("canvas4", "canvas8_copy");
+        // Tambahkan sesuai jumlah
     }
-
     // Tampilkan template yang dipilih
     document.getElementById(selectedTemplate).classList.remove("hidden");
 });
@@ -337,6 +401,62 @@ const tahun = sekarang.getFullYear();
 tanggalElemen.innerText = `${hari}, ${tanggal} ${bulan} ${tahun}`;
 
 
+// fitur tambah file dari internal
+function uploadToCanvas(event, index) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const canvas = canvasList[index];
+    const context = canvas.getContext("2d");
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        const img = new Image();
+        img.onload = function () {
+            canvas.width = 2560;
+            canvas.height = 1440;
+
+            const canvasAspect = canvas.width / canvas.height;
+            const imgAspect = img.width / img.height;
+
+            let sx, sy, sWidth, sHeight;
+
+            if (imgAspect > canvasAspect) {
+                sHeight = img.height;
+                sWidth = sHeight * canvasAspect;
+                sx = (img.width - sWidth) / 2;
+                sy = 0;
+            } else {
+                sWidth = img.width;
+                sHeight = sWidth / canvasAspect;
+                sx = 0;
+                sy = (img.height - sHeight) / 2;
+            }
+
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.drawImage(img, sx, sy, sWidth, sHeight, 0, 0, canvas.width, canvas.height);
+
+            retakeButtons[index].classList.remove("hidden");
+            photoTaken[index] = true;
+
+            if (photoTaken.every(taken => taken)) {
+                document.getElementById("downloadAll")?.classList.remove("hidden");
+                document.getElementById("downloadMerged")?.classList.remove("hidden");
+            }
+
+            // Sinkronisasi ke canvas template lain
+            if (document.getElementById("templateSelector").value === "template1") {
+                syncCanvasContent(`canvas${index + 1}`, `canvas${index + 1}_copy`);
+            } else {
+                syncCanvasContent(`canvas${index + 1}_copy`, `canvas${index + 1}`);
+            }
+        };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
+
 
 // fitur cetak 
 function printTemplate() {
@@ -350,7 +470,7 @@ function printTemplate() {
     html2canvas(selectedTemplate, {
         useCORS: true,
         backgroundColor: null,
-        scale: 2
+        scale: 1
     }).then(canvas => {
         const dataURL = canvas.toDataURL("image/png");
 
@@ -417,5 +537,52 @@ function printTemplate() {
 // fitur darkmode
 function toggleDarkMode() {
     document.documentElement.classList.toggle('dark');
-  }
+}
 
+uploadToCanvasById(event, 'canvas3_only')
+
+//   fungsi uploadToCanvasById 
+function uploadToCanvasById(event, canvasId) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+
+    const context = canvas.getContext("2d");
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        const img = new Image();
+        img.onload = function () {
+            // canvas.width = 2560;
+            // canvas.height = 1440;
+
+            canvas.width = 1080;    // potret
+            canvas.height = 1440;
+
+
+            const canvasAspect = canvas.width / canvas.height;
+            const imgAspect = img.width / img.height;
+
+            let sx, sy, sWidth, sHeight;
+
+            if (imgAspect > canvasAspect) {
+                sHeight = img.height;
+                sWidth = sHeight * canvasAspect;
+                sx = (img.width - sWidth) / 2;
+                sy = 0;
+            } else {
+                sWidth = img.width;
+                sHeight = sWidth / canvasAspect;
+                sx = 0;
+                sy = (img.height - sHeight) / 2;
+            }
+
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.drawImage(img, sx, sy, sWidth, sHeight, 0, 0, canvas.width, canvas.height);
+        };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+}
