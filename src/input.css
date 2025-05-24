@@ -11,7 +11,7 @@ canvas {
 }
 
 #template3 {
-  width: 520px;
+  /* width: 520px; */
   background: linear-gradient(to right, #696870, #474549);
   padding: 20px;
   box-sizing: border-box;
@@ -23,6 +23,9 @@ canvas {
   height: auto;
   aspect-ratio: 3 / 4;
 }
+
+ 
+
 
 
 .lexend-deca {
